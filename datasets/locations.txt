@@ -1,0 +1,4 @@
+http://www.global-view.com/forex-trading-tools/forex-history/index.html EUR/USD CURRENCY PAIR
+http://research.stlouisfed.org/fred2/series/NAPM/downloaddata federal reserve bank of st louis
+https://www.quandl.com/data/ISM/MAN_PMI-PMI-Composite-Index PMI
+http://www.bundesbank.de/Navigation/DE/Statistiken/Geld_und_Kapitalmaerkte/Zinssaetze_und_Renditen/Tabellen/tabellen_zeitreihenliste.html?id=16074
