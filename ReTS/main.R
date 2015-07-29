@@ -60,6 +60,7 @@ tf <- data.riverflow(815, 2)
 ptm <- proc.time()
 
 #  init
+prediction <- 0
 alg <- ReTS.alg.ets$new(dim = (length(tf[1,]) - 1))
 alg$init(.5, as.numeric(tf[1, 1:(length(tf[1,]) - 1)]), 5) #last value is omega
 
@@ -72,7 +73,7 @@ for (i in 2:length(tf[,1])) {
   # load next sample
   x.dat <- tf[i,1:alg$dim]
   y.dat <- tf[i,(alg$dim+1)]
-  
+
   # update sample
   alg$sample$update(x.dat, i)
   
@@ -90,12 +91,17 @@ for (i in 2:length(tf[,1])) {
     alg$addCluster(x.dat, alg$sample$pot)
   }
   
+  # update consequent
   alg$updateFiringDegrees(x.dat)
   alg$normalizeFiringLvls()
   alg$calcNuMatrix(x.dat)  
   alg$updatewRLS(y.dat)
   alg$calcTheta()
 
+  # store prediction
+  prediction <- rbind(prediction,
+                      c(i, sum(t(alg$nu)*alg$theta)))
+  
   # update progress
   setTxtProgressBar(pb, i)
 }
