@@ -34,20 +34,9 @@
 ########### Misc requires ############
 require(ggplot2)
 require(deSolve)
-require(ggthemes)
-require(frbs)
-require(forecast)
-require(astsa)
-require(RJDBC)
 require(plyr)
 require(dplyr)
-require(ggplot2)
-require(lubridate)
 require(zoo) # for interpolation
-require(lmtest)
-require(Hmisc)
-require(stargazer)
-require(gridExtra)
 
 ########### Sourced files ############
 source("ReTS/miscFunctions.R")
@@ -55,7 +44,6 @@ source("ReTS/abstracts.R")
 source("ReTS/ets.plus.R")
 source("ReTS/ets.basic.R")
 source("ReTS/dataLoader.R")
-source("ReTS/theming.R")
 
 ################ DATA ################
 timeSpan <- 4000
@@ -73,9 +61,10 @@ ptm <- proc.time()
 
 #  init
 alg <- ReTS.alg.ets$new(dim = (length(tf[1,]) - 1))
-alg$init(.3, as.numeric(tf[1, 1:(length(tf[1,]) - 1)]), 5) #last value is omega
+alg$init(.5, as.numeric(tf[1, 1:(length(tf[1,]) - 1)]), 5) #last value is omega
 
 pb <- txtProgressBar(1, length(tf[,1]), style = 3) # set progressbar 
+
 for (i in 2:length(tf[,1])) {
   # set kW
   alg$k <- i
@@ -114,7 +103,7 @@ for (i in 2:length(tf[,1])) {
   setTxtProgressBar(pb, i)
 }
 
-# close pb
+# close pb and print processing time
 close(pb)
 proc.time() - ptm
 ############## end implementation ##############
