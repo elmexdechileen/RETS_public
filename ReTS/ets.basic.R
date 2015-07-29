@@ -175,12 +175,10 @@ ReTS.alg.ets <- setRefClass("ReTS.alg.ets",
                                 }
                                 theta <<- t.tt
                               },
-                              init = function(t.globalRadius, samp, t.omega){
+                              init = function(samp){
                                 # function takes first sample and initializes 
-                                # systema
+                                # system
                                 k <<- 2
-                                Omega <<- t.omega
-                                globalRadius <<- t.globalRadius
                                 t.clt = ReTS.cluster.ets$new(z = as.numeric(samp), r = globalRadius, pot = 1,
                                                              prevx = samp,  cv = diag(dim+1)*Omega,
                                                              pi = matrix(0, nrow=dim+1, ncol=1),

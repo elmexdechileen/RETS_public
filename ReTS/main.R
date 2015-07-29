@@ -61,8 +61,9 @@ ptm <- proc.time()
 
 #  init
 prediction <- 0
-alg <- ReTS.alg.ets$new(dim = (length(tf[1,]) - 1))
-alg$init(.5, as.numeric(tf[1, 1:(length(tf[1,]) - 1)]), 5) #last value is omega
+alg <- ReTS.alg.ets$new(globalRadius = 0.5, dim = (length(tf[1,]) - 1),
+                        Omega = 5)
+alg$init(as.numeric(tf[1, 1:(length(tf[1,]) - 1)])) # initial input vector
 
 pb <- txtProgressBar(1, length(tf[,1]), style = 3) # set progressbar 
 
