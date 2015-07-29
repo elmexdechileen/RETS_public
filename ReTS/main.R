@@ -76,9 +76,6 @@ for (i in 2:length(tf[,1])) {
   # update sample
   alg$sample$update(x.dat, i)
   
-  # update point potential var for plotting
-  pointpotential <- c(pointpotential, alg$sample$pot)
-  
   # update cluster potentials
   alg$updateClusters(x.dat)
   
