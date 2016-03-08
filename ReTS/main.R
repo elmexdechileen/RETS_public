@@ -13,9 +13,9 @@
 ## DISTRIBUTED UNDER THE GNU AFFERO GENERAL PUBLIC LICENSE
 ## FOR MORE INFORMATION SEE license.txt or http://fsf.org
 
-## Repository: http://triangle1.net/repo/ReTS.git/
+## Repository: https://triangle1.net/repo/ReTS.git/
 ## Author: Max van Rooijen (max@triangle1.net)
-## Version: 1.0
+## Version: 1.1
 
 # Copyright (C) 2015  Max van Rooijen
 #   
@@ -51,7 +51,7 @@ predPeriod <- 50
 
 # examples
 # tf <- data.radioFreq(1000, predPeriod)
-# tf <- data.MackeyGlass(timeSpan, predPeriod, TRUE, FALSE, FALSE) # input; timespan, periods to predict ahead,
+ tf <- data.MackeyGlass(timeSpan, predPeriod, TRUE, FALSE, FALSE) # input; timespan, periods to predict ahead,
                                                                  #        0 demand periods, sine wave, random noise
 # tf <- data.squareWave(20,8)
 tf <- data.riverflow(815, 2)
@@ -61,9 +61,11 @@ ptm <- proc.time()
 
 #  init
 prediction <- 0
-alg <- ReTS.alg.ets$new(globalRadius = 0.5, dim = (length(tf[1,]) - 1),
-                        Omega = 5)
-alg$init(as.numeric(tf[1, 1:(length(tf[1,]) - 1)])) # initial input vector
+alg <- ReTS.alg.etsplus$new(dim = (length(tf[1,]) - 1))
+alg$init(1,
+         as.numeric(tf[1, 1:(length(tf[1,]) - 1)]),
+         5,
+         0.5)
 
 pb <- txtProgressBar(1, length(tf[,1]), style = 3) # set progressbar 
 
@@ -83,14 +85,20 @@ for (i in 2:length(tf[,1])) {
   
   # Test potential values and proximity
   g <- alg$proximityTest(x.dat)
-  if (g[1] != 0 && !is.na(g[2])) {
+  if (g[1] == 1 && !is.na(g[2])) {
     # cluster in close proximity of previous cluster
     # so update existing cluster
-    alg$modCluster(g[2], alg$sample$x)
-  } else if (g[1] != 0){
+    alg$modCluster(g[2], alg$sample$x, alg$rho)
+  } else if (g[1] == 1){
     # add new cluster and update consequent part
     alg$addCluster(x.dat, alg$sample$pot)
+  } else if (g[1] == 0 && !is.na(g[2])) {
+    # if inclose proximity only assign point as support
+    # for closest cluster. So mod cluster by assigning
+    # existing cluster center to update (bad code though)
+    alg$modCluster(g[2], alg$clusters[[g[2]]]$z, alg$rho)
   }
+  
   
   # update consequent
   alg$updateFiringDegrees(x.dat)

@@ -10,7 +10,7 @@
 ## DISTRIBUTED UNDER THE GNU AFFERO GENERAL PUBLIC LICENSE
 ## FOR MORE INFORMATION SEE license.txt or http://fsf.org
 
-## Repository: http://triangle1.net/repo/ReTS.git
+## Repository: https://triangle1.net/repo/ReTS.git
 ## Author: Max van Rooijen (max@triangle1.net)
 ## Version: 1.0
 
